@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Elements and Form Validation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            transition: background-color 0.3s;
+            background-color: white;
+            margin: 0;
+            padding: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        input, select {
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 300px;
+            margin: auto;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <button id="toggleBg">Toggle Background</button>
+    
+    <br><br>
+    <input type="range" id="textSizeSlider" min="10" max="50" value="16">
+    <p id="text">Adjust my size</p>
+    
+    <br>
+    <button id="openModal">Open Modal</button>
+    <div id="modal" class="modal">
+        <p>This is a modal</p>
+        <button id="closeModal">Close</button>
+    </div>
+    
+    <br>
+    <form id="myForm">
+        <label>Name:</label>
+        <input type="text" id="name">
+        <p class="error" id="nameError"></p>
+        
+        <label>Email:</label>
+        <input type="email" id="email">
+        <p class="error" id="emailError"></p>
+        
+        <label>Password:</label>
+        <input type="password" id="password">
+        <p class="error" id="passwordError"></p>
+        
+        <button type="submit">Submit</button>
+    </form>
+    
+    <br>
+    <label>Choose an option:</label>
+    <select id="dropdown">
+        <option value="">Select</option>
+        <option value="option1">Option 1</option>
+        <option value="option2">Option 2</option>
+    </select>
+    <p id="dropdownMessage"></p>
+    
+    <script>
+        document.getElementById("toggleBg").addEventListener("click", function() {
+            document.body.style.background = document.body.style.background === "lightblue" ? "white" : "lightblue";
+        });
+        
+        document.getElementById("textSizeSlider").addEventListener("input", function() {
+            document.getElementById("text").style.fontSize = this.value + "px";
+        });
+        
+        document.getElementById("openModal").addEventListener("click", function() {
+            document.getElementById("modal").style.display = "block";
+        });
+        document.getElementById("closeModal").addEventListener("click", function() {
+            document.getElementById("modal").style.display = "none";
+        });
+        
+        document.getElementById("myForm").addEventListener("submit", function(event) {
+            let valid = true;
+            let name = document.getElementById("name").value;
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+            
+            document.getElementById("nameError").textContent = name.length >= 3 ? "" : "Name must be at least 3 characters.";
+            document.getElementById("emailError").textContent = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? "" : "Invalid email format.";
+            document.getElementById("passwordError").textContent = /^(?=.*[A-Z])(?=.*\d).{8,}$/.test(password) ? "" : "Password must be 8+ characters, include an uppercase letter and a number.";
+            
+            if (name.length < 3 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
+                event.preventDefault();
+            }
+        });
+        
+        document.getElementById("dropdown").addEventListener("change", function() {
+            document.getElementById("dropdownMessage").textContent = this.value ? "You selected " + this.value : "";
+        });
+    </script>
+</body>
+</html>
